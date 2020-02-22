@@ -1,9 +1,14 @@
 module.exports = function repeater(
 	str,
-	{ repeatTimes, separator = '+', addition, additionRepeatTimes, additionSeparator }
+	{ repeatTimes, separator = '+', addition, additionRepeatTimes, additionSeparator = '|' }
 ) {
 	function add() {
-		return addition ? addition : '';
+		if (!additionRepeatTimes) return addition ? addition : '';
+		let result = addition;
+		for (let i = 1; i < additionRepeatTimes; i++) {
+			result += additionSeparator + addition;
+		}
+		return result;
 	}
 
 	let result = str;
