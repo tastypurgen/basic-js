@@ -4,13 +4,33 @@ class VigenereCipheringMachine {
 		const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 		const maxLength = Math.max(message.length, message.length);
 		let result = '';
+		message = message.toUpperCase();
+		key = key.toUpperCase();
+		let newMessage = [];
+		let newKey = '';
+		let innerCount = 0;
 		for (let i = 0; i < maxLength; i++) {
-			const m = alphabet.indexOf(message[message.length <= i ? i % message.length : i].toUpperCase());
-			console.log(m);
-			const k = key[key.length <= i ? i % key.length : i];
-			console.log(k);
-			result += m == -1 ? message[i] : alphabet[(m + alphabet.indexOf(k.toUpperCase())) % alphabet.length];
-			console.log(result);
+			if (alphabet.indexOf(message[i]) != -1) {
+				newMessage.push(alphabet.indexOf(message[i]));
+				if (innerCount >= key.length) {
+					newKey += key[innerCount % key.length];
+					innerCount++;
+				} else {
+					newKey += key[innerCount];
+					innerCount++;
+				}
+			} else {
+				newMessage.push(-1);
+			}
+		}
+		innerCount = 0;
+		for (let i = 0; i < maxLength; i++) {
+			if (newMessage[i] == -1) {
+				result += message[i];
+			} else {
+				result += alphabet[(newMessage[i] + alphabet.indexOf(newKey[innerCount])) % alphabet.length];
+				innerCount++;
+			}
 		}
 		return result;
 	}
