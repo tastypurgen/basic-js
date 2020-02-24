@@ -1,17 +1,21 @@
 class VigenereCipheringMachine {
+	constructor(reverse) {
+		this.reverse = reverse;
+	}
+
 	encrypt(message, key) {
 		if (!message || !key) throw new Error();
 		const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 		const maxLength = Math.max(message.length, message.length);
 		let result = '';
-		message = message.toUpperCase();
+		let rightMessage = this.reverse == false ? message.toUpperCase().split('').reverse() : message.toUpperCase();
 		key = key.toUpperCase();
 		let newMessage = [];
 		let newKey = '';
 		let innerCount = 0;
 		for (let i = 0; i < maxLength; i++) {
-			if (alphabet.indexOf(message[i]) != -1) {
-				newMessage.push(alphabet.indexOf(message[i]));
+			if (alphabet.indexOf(rightMessage[i]) != -1) {
+				newMessage.push(alphabet.indexOf(rightMessage[i]));
 				if (innerCount >= key.length) {
 					newKey += key[innerCount % key.length];
 					innerCount++;
@@ -25,9 +29,8 @@ class VigenereCipheringMachine {
 		}
 		innerCount = 0;
 		for (let i = 0; i < maxLength; i++) {
-			if (newMessage[i] == -1) {
-				result += message[i];
-			} else {
+			if (newMessage[i] == -1) result += rightMessage[i];
+			else {
 				result += alphabet[(newMessage[i] + alphabet.indexOf(newKey[innerCount])) % alphabet.length];
 				innerCount++;
 			}
@@ -40,14 +43,14 @@ class VigenereCipheringMachine {
 		const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 		const maxLength = Math.max(message.length, message.length);
 		let result = '';
-		message = message.toUpperCase();
+		let rightMessage = this.reverse == false ? message.toUpperCase().split('').reverse() : message.toUpperCase();
 		key = key.toUpperCase();
 		let newMessage = [];
 		let newKey = '';
 		let innerCount = 0;
 		for (let i = 0; i < maxLength; i++) {
-			if (alphabet.indexOf(message[i]) != -1) {
-				newMessage.push(alphabet.indexOf(message[i]));
+			if (alphabet.indexOf(rightMessage[i]) != -1) {
+				newMessage.push(alphabet.indexOf(rightMessage[i]));
 				if (innerCount >= key.length) {
 					newKey += key[innerCount % key.length];
 					innerCount++;
@@ -61,10 +64,8 @@ class VigenereCipheringMachine {
 		}
 		innerCount = 0;
 		for (let i = 0; i < maxLength; i++) {
-			if (newMessage[i] == -1) {
-				result += message[i];
-			} else {
-				// result += alphabet[(newMessage[i] + alphabet.length - newKey[innerCount]) % alphabet.length];
+			if (newMessage[i] == -1) result += rightMessage[i];
+			else {
 				result +=
 					alphabet[
 						Math.abs(
